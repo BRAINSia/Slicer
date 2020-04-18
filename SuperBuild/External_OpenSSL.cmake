@@ -69,7 +69,8 @@ You could either:
     endif()
 
     #------------------------------------------------------------------------------
-    set(EP_SOURCE_DIR ${CMAKE_BINARY_DIR}/${proj})
+    set(proj_dirname openssl) #The directory name needs to be lower case
+    set(EP_SOURCE_DIR ${CMAKE_BINARY_DIR}/${proj_dirname})
 
     include(ExternalProjectForNonCMakeProject)
 
