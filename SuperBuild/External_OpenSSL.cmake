@@ -92,6 +92,14 @@ set(ENV{VS_UNICODE_OUTPUT} \"\")
   # This is required when building Slicer using a cronjob where the
   # default environment is restricted.
   set(ENV{PATH} \"/usr/sbin:\$ENV{PATH}\")
+
+  # Allow the SDKROOT to be found on mac when
+  # building OpenSSL. This is needed to find
+  # standard header files and avoid errors like
+  # | ./cryptlib.h:62:11: fatal error: 'stdlib.h' file not found
+  # | # include <stdlib.h>
+  # |
+  set(ENV{SDKROOT} \"${CMAKE_OSX_SYSROOT}\")
 ")
     endif()
 
@@ -109,6 +117,11 @@ ExternalProject_Execute(${proj} \"configure\" sh config --with-zlib-lib=${_zlib_
 ")
 
     #------------------------------------------------------------------------------
+    if(APPLE)
+       set(OPEN_SSL_MAKE_ENV "SDKROOT=${CMAKE_OSX_SYSROOT}")
+    else()
+       unset(OPEN_SSL_MAKE_ENV)
+    endif()
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
       URL ${OpenSSL_${OPENSSL_DOWNLOAD_VERSION}_URL}
@@ -118,7 +131,7 @@ ExternalProject_Execute(${proj} \"configure\" sh config --with-zlib-lib=${_zlib_
       BUILD_IN_SOURCE 1
       PATCH_COMMAND ${CMAKE_COMMAND} -P ${_configure_script}
       CONFIGURE_COMMAND ""
-      BUILD_COMMAND make -j1 build_libs
+      BUILD_COMMAND ${OPEN_SSL_MAKE_ENV} make -j1 build_libs
       INSTALL_COMMAND ""
       DEPENDS
         ${${proj}_DEPENDENCIES}
