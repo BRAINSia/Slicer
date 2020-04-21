@@ -69,7 +69,7 @@ You could either:
     endif()
 
     #------------------------------------------------------------------------------
-    set(EP_SOURCE_DIR ${CMAKE_BINARY_DIR}/${proj})
+    set(EP_SOURCE_DIR ${CMAKE_BINARY_DIR}/${proj}-${OPENSSL_DOWNLOAD_VERSION})
 
     include(ExternalProjectForNonCMakeProject)
 
