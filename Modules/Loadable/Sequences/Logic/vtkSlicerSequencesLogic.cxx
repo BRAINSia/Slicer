@@ -59,8 +59,7 @@ vtkStandardNewMacro(vtkSlicerSequencesLogic);
 
 //----------------------------------------------------------------------------
 vtkSlicerSequencesLogic::vtkSlicerSequencesLogic()
-  : UpdateProxyNodesFromSequencesInProgress(false)
-  , UpdateSequencesFromProxyNodesInProgress(false)
+   
 {
 }
 
