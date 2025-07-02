@@ -60,6 +60,7 @@ qSlicerWidgetValueWrapper::~qSlicerWidgetValueWrapper() = default;
   {                                                                                           \
   class _NAME##WidgetValueWrapper : public qSlicerWidgetValueWrapper                          \
   {                                                                                           \
+    Q_OBJECT                                                                                  \
   public:                                                                                     \
     _NAME##WidgetValueWrapper(const QString& _name, const QString& _label, _WIDGET* _widget)  \
       : qSlicerWidgetValueWrapper(_name, _label, _widget)                                     \

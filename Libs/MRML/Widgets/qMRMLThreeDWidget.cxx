@@ -46,6 +46,7 @@
 // qMRMLSliceViewPrivate
 class qMRMLThreeDWidgetPrivate : public QObject
 {
+  Q_OBJECT
   Q_DECLARE_PUBLIC(qMRMLThreeDWidget);
 
 protected:
@@ -60,7 +61,6 @@ public:
   qMRMLThreeDView* ThreeDView;
   qMRMLThreeDViewControllerWidget* ThreeDController;
 };
-
 
 //---------------------------------------------------------------------------
 qMRMLThreeDWidgetPrivate::qMRMLThreeDWidgetPrivate(qMRMLThreeDWidget& object)

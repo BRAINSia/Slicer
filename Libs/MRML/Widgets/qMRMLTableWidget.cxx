@@ -43,6 +43,7 @@
 // qMRMLTableWidgetPrivate
 class qMRMLTableWidgetPrivate : public QObject
 {
+  Q_OBJECT
   Q_DECLARE_PUBLIC(qMRMLTableWidget);
 
 protected:
@@ -57,7 +58,6 @@ public:
   qMRMLTableView* TableView;
   qMRMLTableViewControllerWidget* TableController;
 };
-
 
 //---------------------------------------------------------------------------
 qMRMLTableWidgetPrivate::qMRMLTableWidgetPrivate(qMRMLTableWidget& object)

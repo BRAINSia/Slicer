@@ -209,6 +209,7 @@ namespace
 // ----------------------------------------------------------------------------
 class qSlicerScriptedLoadableModuleWidgetTestSetup : public qSlicerScriptedLoadableModuleWidget
 {
+  Q_OBJECT
 public:
   void callSetup() { this->setup(); }
 };
