@@ -157,3 +157,5 @@ void qSlicerSubjectHierarchyExpandToDepthPlugin::expandToDepthFromContextMenu()
     currentTreeView->expandToDepth(depth);
   }
 }
+
+#include "qSlicerSubjectHierarchyExpandToDepthPlugin.moc"

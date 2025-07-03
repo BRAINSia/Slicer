@@ -168,3 +168,5 @@ qMRMLViewControllerBar* qMRMLPlotWidget::controllerWidget() const
 {
   return this->plotController();
 }
+
+#include "qMRMLPlotWidget.moc"

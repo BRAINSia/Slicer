@@ -289,3 +289,5 @@ void qSlicerSubjectHierarchyParseLocalDataPlugin::createHierarchyFromLoadedDirec
     emit requestExpandItem(createdItemID);
   }
 }
+
+#include "qSlicerSubjectHierarchyParseLocalDataPlugin.moc"

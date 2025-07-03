@@ -735,3 +735,5 @@ void qSlicerSubjectHierarchyViewContextMenuPlugin::setSlabReconstructionInteract
   }
   appLogic->SetIntersectingSlicesEnabled(vtkMRMLApplicationLogic::IntersectingSlicesThickSlabInteractive, interactive);
 }
+
+#include "qSlicerSubjectHierarchyViewContextMenuPlugin.moc"

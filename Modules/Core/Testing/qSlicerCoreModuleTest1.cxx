@@ -20,6 +20,7 @@
 
 #include "qSlicerCoreModule.h"
 
+
 class ACoreModule : public qSlicerCoreModule
 {
   Q_OBJECT
@@ -29,6 +30,7 @@ public:
   vtkMRMLAbstractLogic* createLogic() override { return nullptr; }
 };
 
+
 int qSlicerCoreModuleTest1(int, char*[])
 {
   qSlicerCoreModule* module = new ACoreModule;
@@ -36,3 +38,5 @@ int qSlicerCoreModuleTest1(int, char*[])
 
   return EXIT_SUCCESS;
 }
+
+#include <qSlicerCoreModuleTest1.moc>

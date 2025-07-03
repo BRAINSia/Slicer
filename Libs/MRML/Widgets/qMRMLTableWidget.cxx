@@ -174,3 +174,5 @@ qMRMLViewControllerBar* qMRMLTableWidget::controllerWidget() const
   Q_D(const qMRMLTableWidget);
   return this->tableController();
 }
+
+#include "qMRMLTableWidget.moc"

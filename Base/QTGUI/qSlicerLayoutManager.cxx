@@ -107,3 +107,5 @@ void qSlicerLayoutManager::setCurrentModule(const QString& moduleName)
 {
   emit this->selectModule(moduleName);
 }
+
+#include "qSlicerLayoutManager.moc"

@@ -334,3 +334,5 @@ vtkMRMLTableViewNode* qSlicerSubjectHierarchyTablesPlugin::getTableViewNode() co
 
   return nullptr;
 }
+
+#include "qSlicerSubjectHierarchyTablesPlugin.moc"

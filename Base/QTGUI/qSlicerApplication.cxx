@@ -1535,3 +1535,5 @@ void qSlicerApplication::logToPythonConsole(const QDateTime& currentDateTime,
   }
 }
 #endif
+
+#include "qSlicerApplication.moc"

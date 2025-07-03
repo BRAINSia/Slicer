@@ -1352,3 +1352,5 @@ void qSlicerExtensionsLocalWidget::refresh()
     this->extensionsManagerModel()->updateModel();
   }
 }
+
+#include "qSlicerExtensionsLocalWidget.moc"
