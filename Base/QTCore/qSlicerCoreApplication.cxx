@@ -20,6 +20,10 @@
 
 // standard library includes
 #include <clocale>
+#include <stdexcept>
+
+// Python include header
+#include <Python.h>
 
 // Qt includes
 #include <QDebug>
@@ -34,6 +38,7 @@
 #include <QTranslator>
 #include <QStandardPaths>
 #include <QTemporaryFile>
+
 
 #ifdef Q_OS_WIN32
 #  include <Windows.h> // For ExitProcess
@@ -1248,8 +1253,48 @@ void qSlicerCoreApplication::handleCommandLineArguments()
       pythonArgv[i + 1] = QStringToPythonWCharPointer(scriptArgs.at(i));
     }
 
-    // See https://docs.python.org/c-api/init.html
-    PySys_SetArgvEx(pythonArgc, pythonArgv, /*updatepath=*/false);
+    // https://docs.python.org/3/c-api/init_config.html#init-config
+
+    int status_exit_code = 0;
+
+    PyConfig config;
+    PyConfig_InitPythonConfig(&config);
+    config.isolated = 1;
+
+    /* Decode command line arguments.
+       Implicitly preinitialize Python (in isolated mode). */
+    PyStatus status = PyConfig_SetArgv(&config, pythonArgc, pythonArgv);
+    if (PyStatus_Exception(status))
+    {
+      PyConfig_Clear(&config);
+      if (PyStatus_IsExit(status))
+      {
+        status_exit_code = status.exitcode;
+      }
+      /* Display the error message and exit the process with
+         non-zero exit code */
+      Py_ExitStatusException(status);
+    }
+
+    status = Py_InitializeFromConfig(&config);
+    if (PyStatus_Exception(status))
+    {
+      PyConfig_Clear(&config);
+      if (PyStatus_IsExit(status))
+      {
+        status_exit_code = status.exitcode;
+      }
+      /* Display the error message and exit the process with
+         non-zero exit code */
+      Py_ExitStatusException(status);
+    }
+    PyConfig_Clear(&config);
+
+    if (status_exit_code != 0)
+    {
+      throw std::runtime_error("Python initialization failed with status_code " + std::to_string(status_exit_code));
+    }
+
 
     // Set 'sys.executable' so that Slicer can be used as a "regular" python interpreter
     this->corePythonManager()->executeString(
