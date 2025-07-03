@@ -17,18 +17,14 @@ INNER_BLD_DIR=${BLD_DIR}/Slicer-build
 "
 
 usage() {
-  echo "USAGE: $0 <clazy_yaml_file>"
+  echo "USAGE: $0 # no arguments can be provided."
   echo ""
-  echo "find ${SRC_DIR} ${INNER_BLD_DIR} -name \"*.clazy.yaml\" -exec $(realpath ${SCRIPT_DIR}/$0) {} \\;"
   exit -1
 }
 
+
 cd ${INNER_BLD_DIR}
-clazy_yaml_file=$1
-if [ $# -ne 1 ];then
-  usage
-fi
-if [ ! -f ${clazy_yaml_file} ]; then
+if [ $# -ne 0 ];then
   usage
 fi
 
@@ -38,23 +34,22 @@ if [ ! -f ${precommit_bin} ];then
   echo "python3 -m venv /tmp/venv"
   echo "source /tmp/venv"
   echo "pip install pre-commit"
+  usage
 fi
-clazy_yaml_dir=$(dirname ${clazy_yaml_file})
 
 # Convert the yaml files to standard gcc errfmt files for
 # easier corrections via `vim -q /tmp/errmt.err`
 error_file=/tmp/errfmt.err
-for clazy_yaml_file in ${clazy_yaml_dir}/*.clazy.yaml; do
+for clazy_yaml_file in $(find ${SRC_DIR} ${INNER_BLD_DIR} -name \"*.clazy.yaml\"); do
   # Only include errors/warnings from this source tree in them
   ${SCRIPT_DIR}/yaml_to_gcc_fmt.py ${clazy_yaml_file} | grep ${SRC_DIR} >> ${error_file}
+  clang-apply-replacements-19 \
+    --format                  \
+    --style=file              \
+    $(dirname ${clazy_yaml_file})
 done
 sort -u ${error_file} > ${error_file}.tmp
 mv ${error_file}.tmp ${error_file}
-
-clang-apply-replacements-19 \
-  --format                  \
-  --style=file              \
-  ${clazy_yaml_dir}
 
 cd ${SRC_DIR}
 for changed_file in $(git diff --name-only); do
@@ -66,7 +61,7 @@ message_file=/tmp/commit_msg_clazy_$(date +%Y%m%d.%H%M%S)
 cat > ${message_file} << EOF
 ENH: Update to support Qt6 using clazy auto-fixes
 
-$(grep --no-filename  "\<Message: " ${clazy_yaml_dir}/*.clazy.yaml |sed 's/  */ /g' )
+$(grep --no-filename  "\<Message: " $(find ${SRC_DIR} ${INNER_BLD_DIR} -name "*.clazy.yaml") |sed 's/  */ /g' )
 EOF
 
 
